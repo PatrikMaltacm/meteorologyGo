@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/PatrikMaltacm/meteorologyGo/internal/database"
 	"github.com/PatrikMaltacm/meteorologyGo/internal/handler"
@@ -9,7 +10,12 @@ import (
 )
 
 func main() {
-	db := database.Connect("./database.db")
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		dsn = "./database.db"
+	}
+
+	db := database.Connect(dsn)
 	defer db.Close()
 
 	weatherHandler := handler.NewWeatherHandler(db)
