@@ -6,9 +6,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitRoutes(r *gin.RouterGroup, h *WheaterHandler) {
+func InitRoutes(r *gin.RouterGroup, h *WeatherHandler) {
 	r.GET("/HealthCheck", func(c *gin.Context) { c.JSON(http.StatusOK, gin.H{"Status": "Rodando"}) })
-	r.GET("/getData", h.GetWheaterData)
-	r.POST("/sendData", h.SendWheaterData)
+	r.GET("/getData", h.GetWeatherData)
+	r.POST("/sendData", h.SendWeatherData)
 	r.POST("/setup", h.SetupDatabase)
 }

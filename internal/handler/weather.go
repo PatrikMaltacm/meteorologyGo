@@ -9,18 +9,18 @@ import (
 	"github.com/google/uuid"
 )
 
-type WheaterHandler struct {
+type WeatherHandler struct {
 	db *sql.DB
 }
 
-func NewWheaterHandler(db *sql.DB) *WheaterHandler {
-	return &WheaterHandler{
+func NewWeatherHandler(db *sql.DB) *WeatherHandler {
+	return &WeatherHandler{
 		db: db,
 	}
 }
 
-func (w *WheaterHandler) SendWheaterData(c *gin.Context) {
-	var dataRequest model.WheatherRequest
+func (w *WeatherHandler) SendWeatherData(c *gin.Context) {
+	var dataRequest model.WeatherRequest
 
 	if err := c.ShouldBindJSON(&dataRequest); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -43,8 +43,8 @@ func (w *WheaterHandler) SendWheaterData(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"dados:": dataRequest})
 }
 
-func (w *WheaterHandler) GetWheaterData(c *gin.Context) {
-	var data model.WheaterResponse
+func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
+	var data model.WeatherResponse
 
 	query := `
         SELECT 
@@ -69,7 +69,7 @@ func (w *WheaterHandler) GetWheaterData(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"Dados:": data})
 }
 
-func (w *WheaterHandler) SetupDatabase(c *gin.Context) {
+func (w *WeatherHandler) SetupDatabase(c *gin.Context) {
 	query := `
     CREATE TABLE IF NOT EXISTS weather_data (
         id TEXT PRIMARY KEY,

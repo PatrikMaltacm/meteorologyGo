@@ -12,7 +12,7 @@ func main() {
 	db := database.Connect("./database.db")
 	defer db.Close()
 
-	weatherHandler := handler.NewWheaterHandler(db)
+	weatherHandler := handler.NewWeatherHandler(db)
 
 	router := gin.Default()
 	handler.InitRoutes(&router.RouterGroup, weatherHandler)
