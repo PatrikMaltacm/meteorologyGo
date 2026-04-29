@@ -40,7 +40,7 @@ func (w *WeatherHandler) SendWeatherData(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusAccepted, gin.H{"dados:": dataRequest})
+	c.JSON(http.StatusAccepted, gin.H{"dados": dataRequest})
 }
 
 func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
@@ -66,7 +66,7 @@ func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"Dados:": data})
+	c.JSON(http.StatusOK, gin.H{"dados": data})
 }
 
 func (w *WeatherHandler) SetupDatabase(c *gin.Context) {
