@@ -43,14 +43,43 @@ func (w *WeatherHandler) SendWeatherData(c *gin.Context) {
 	c.JSON(http.StatusAccepted, gin.H{"dados": dataRequest})
 }
 
+func (w *WeatherHandler) GetAllWeatherData(c *gin.Context) {
+	var allData []model.WeatherResponse
+
+	query := `
+		SELECT id, pressure, humidity, temp, created_at
+		FROM weather_data
+	`
+
+	rows, err := w.db.Query(query)
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message:": "Erro ao buscar dados."})
+		return
+	}
+
+	for rows.Next() {
+		var register model.WeatherResponse
+
+		if err := rows.Scan(&register.ID, &register.Pressure, &register.Humidity, &register.Temp, &register.CreatedAt); err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"message:": "Erro ao ler registro."})
+			return
+		}
+
+		allData = append(allData, register)
+	}
+
+	c.JSON(http.StatusOK, allData)
+}
+
 func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 	var data model.WeatherResponse
 
 	query := `
-        SELECT 
+        SELECT
             id, pressure, humidity, temp, created_at
-        FROM weather_data 
-        ORDER BY created_at DESC 
+        FROM weather_data
+        ORDER BY created_at DESC
         LIMIT 1
     `
 
@@ -66,7 +95,7 @@ func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"dados": data})
+	c.JSON(http.StatusOK, data)
 }
 
 func (w *WeatherHandler) SetupDatabase(c *gin.Context) {
