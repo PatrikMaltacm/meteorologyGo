@@ -4,11 +4,11 @@ import (
 	"database/sql"
 	"log"
 
-	_ "modernc.org/sqlite"
+	_ "github.com/jackc/pgx/v5/stdlib"
 )
 
 func Connect(dsn string) *sql.DB {
-	db, err := sql.Open("sqlite", dsn)
+	db, err := sql.Open("pgx", dsn)
 	if err != nil {
 		log.Fatalf("database: failed to open: %v", err)
 	}
@@ -17,10 +17,6 @@ func Connect(dsn string) *sql.DB {
 		log.Fatalf("database: failed to ping: %v", err)
 	}
 
-	if _, err := db.Exec("PRAGMA journal_mode=WAL;"); err != nil {
-		log.Fatalf("database: failed to enable WAL mode: %v", err)
-	}
-
-	log.Println("database: connected with WAL mode enabled")
+	log.Println("database: connected to PostgreSQL")
 	return db
 }
