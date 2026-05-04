@@ -4,6 +4,7 @@ import (
 	"log"
 	"os"
 
+	"github.com/PatrikMaltacm/meteorologyGo/internal/cache"
 	"github.com/PatrikMaltacm/meteorologyGo/internal/database"
 	"github.com/PatrikMaltacm/meteorologyGo/internal/handler"
 	"github.com/gin-gonic/gin"
@@ -21,10 +22,15 @@ func main() {
 		log.Fatal("DATABASE_URL environment variable is not set")
 	}
 
+	c, err := cache.NewBigCache()
+	if err != nil {
+		log.Fatal("Erro ao iniciar cache:", err)
+	}
+
 	db := database.Connect(dsn)
 	defer db.Close()
 
-	weatherHandler := handler.NewWeatherHandler(db)
+	weatherHandler := handler.NewWeatherHandler(db, c)
 
 	router := gin.Default()
 	v1 := router.Group("/api/v1")

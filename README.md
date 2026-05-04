@@ -22,6 +22,7 @@ Esta API é o lugar ideal para armazenar, consultar e gerenciar esses dados de f
 | [Go (Golang)](https://go.dev/) | Linguagem principal — alta performance e concorrência nativa |
 | [Gin Gonic](https://github.com/gin-gonic/gin) | Framework web rápido e minimalista |
 | [PostgreSQL](https://www.postgresql.org/) | Banco de dados relacional robusto para armazenamento dos dados |
+| [BigCache](https://github.com/allegro/bigcache) | Cache em memória ultra-rápido, reduzindo o tempo de resposta do último dado para ~4ms |
 | [go-playground/validator](https://github.com/go-playground/validator) | Validação rigorosa dos dados recebidos dos sensores |
 | [godotenv](https://github.com/joho/godotenv) | Gerenciamento de variáveis de ambiente via `.env` |
 
@@ -87,7 +88,7 @@ A API recebe os dados via `POST` no endpoint `/api/v1/weather`. Exemplo de paylo
 ```
 
 **Consultar dados:**
-- `GET /api/v1/weather` (retorna a última leitura registrada)
+- `GET /api/v1/weather` (retorna a última leitura registrada com altíssima performance em ~4ms graças ao cache em memória)
 - `GET /api/v1/weather/all` (retorna todo o histórico de leituras)
 
 ---
