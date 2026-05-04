@@ -31,9 +31,9 @@ func (w *WeatherHandler) SendWeatherData(c *gin.Context) {
 	}
 
 	newID := uuid.New().String()
-	query := `INSERT INTO weather_data (id, pressure, humidity, temp, lat, long) VALUES ($1, $2, $3, $4, $5, $6)`
+	query := `INSERT INTO weather_data (id, station_id, pressure, humidity, temp, lat, long) VALUES ($1, $2, $3, $4, $5, $6, $7)`
 
-	_, err := w.db.Exec(query, newID, dataRequest.Pressure, dataRequest.Humidity, dataRequest.Temp, dataRequest.Lat, dataRequest.Long)
+	_, err := w.db.Exec(query, newID, dataRequest.StationID, dataRequest.Pressure, dataRequest.Humidity, dataRequest.Temp, dataRequest.Lat, dataRequest.Long)
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})

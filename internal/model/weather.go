@@ -8,7 +8,7 @@ type StationInfo struct {
 }
 
 type WeatherRequest struct {
-	StationID string  `json:"station_id"`
+	StationID string  `json:"station_id" binding:"required"`
 	Pressure  uint32  `json:"pressure" binding:"required"`
 	Humidity  uint16  `json:"humidity" binding:"required"`
 	Temp      int16   `json:"temp" binding:"required"`
