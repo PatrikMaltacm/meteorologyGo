@@ -27,7 +27,8 @@ func main() {
 	weatherHandler := handler.NewWeatherHandler(db)
 
 	router := gin.Default()
-	handler.InitRoutes(&router.RouterGroup, weatherHandler)
+	v1 := router.Group("/api/v1")
+	handler.InitRoutes(v1, weatherHandler)
 
 	if err := router.Run(":8080"); err != nil {
 		log.Fatal(err)

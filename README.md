@@ -21,7 +21,7 @@ Esta API é o lugar ideal para armazenar, consultar e gerenciar esses dados de f
 |---|---|
 | [Go (Golang)](https://go.dev/) | Linguagem principal — alta performance e concorrência nativa |
 | [Gin Gonic](https://github.com/gin-gonic/gin) | Framework web rápido e minimalista |
-| [SQLite](https://www.sqlite.org/) | Banco de dados local, leve e sem configuração complexa |
+| [PostgreSQL](https://www.postgresql.org/) | Banco de dados relacional robusto para armazenamento dos dados |
 | [go-playground/validator](https://github.com/go-playground/validator) | Validação rigorosa dos dados recebidos dos sensores |
 | [godotenv](https://github.com/joho/godotenv) | Gerenciamento de variáveis de ambiente via `.env` |
 
@@ -38,13 +38,14 @@ meteorologyGo/
 │       └── main.go          # Ponto de entrada da aplicação
 ├── internal/
 │   ├── database/
-│   │   └── database.go      # Configuração e conexão com o banco de dados (SQLite)
+│   │   └── database.go      # Configuração e conexão com o banco de dados (PostgreSQL)
 │   ├── handler/
 │   │   ├── routes.go        # Definição das rotas da API
+│   │   ├── station.go       # Handlers HTTP para as estações
 │   │   └── weather.go       # Handlers HTTP para os dados meteorológicos
 │   └── model/
-│       └── weather.go       # Modelos e estruturas de dados
-├── database.db              # Arquivo do banco de dados SQLite (gerado em runtime)
+│       ├── station.go       # Modelos e estruturas de dados de estações
+│       └── weather.go       # Modelos e estruturas de dados meteorológicos
 ├── go.mod
 ├── go.sum
 └── README.md
@@ -52,17 +53,42 @@ meteorologyGo/
 
 ---
 
-## 📡 Integração com Sensores
+## 📡 Integração e Rotas da API
 
-A API recebe dados via `POST` no endpoint `/sendData`. Exemplo de payload:
+### Estações
+
+Você pode cadastrar e consultar suas estações meteorológicas.
+
+**Criar uma estação:**
+`POST /api/v1/station`
+```json
+{
+  "lat": -23.5505,
+  "long": -46.6333
+}
+```
+
+**Listar todas as estações:**
+`GET /api/v1/station/all`
+
+### Dados Meteorológicos
+
+A API recebe os dados via `POST` no endpoint `/api/v1/weather`. Exemplo de payload:
 
 ```json
 {
+  "station_id": "uuid-da-estacao",
   "pressure": 1013,
   "humidity": 65,
-  "temp": 22
+  "temp": 22,
+  "lat": -23.5505,
+  "long": -46.6333
 }
 ```
+
+**Consultar dados:**
+- `GET /api/v1/weather` (retorna a última leitura registrada)
+- `GET /api/v1/weather/all` (retorna todo o histórico de leituras)
 
 ---
 
@@ -93,10 +119,10 @@ go mod tidy
 go run cmd/server/main.go
 ```
 
-4. **Inicialize o banco de dados** (somente na primeira execução), acessando via `POST`:
-
-```
-http://localhost:8080/setup
+4. **Configure suas variáveis de ambiente:**
+Crie um arquivo `.env` na raiz do projeto com a URL de conexão do PostgreSQL, por exemplo:
+```env
+DATABASE_URL=postgres://user:password@localhost:5432/meteorology?sslmode=disable
 ```
 
 ---

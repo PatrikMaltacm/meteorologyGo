@@ -47,7 +47,7 @@ func (w *WeatherHandler) GetAllWeatherData(c *gin.Context) {
 	var allData []model.WeatherResponse
 
 	query := `
-		SELECT id, pressure, humidity, temp, lat, long, created_at
+		SELECT id, pressure, humidity, temp, station_id, lat, long, created_at
 		FROM weather_data
 	`
 
@@ -60,7 +60,7 @@ func (w *WeatherHandler) GetAllWeatherData(c *gin.Context) {
 
 	for rows.Next() {
 		var register model.WeatherResponse
-		if err := rows.Scan(&register.ID, &register.Pressure, &register.Humidity, &register.Temp, &register.Lat, &register.Long, &register.CreatedAt); err != nil {
+		if err := rows.Scan(&register.ID, &register.Pressure, &register.Humidity, &register.Temp, &register.StationID, &register.Lat, &register.Long, &register.CreatedAt); err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{"message": "Erro ao ler registro."})
 			return
 		}
@@ -74,7 +74,7 @@ func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 	var data model.WeatherResponse
 
 	query := `
-		SELECT id, pressure, humidity, temp, lat, long, created_at
+		SELECT id, pressure, humidity, temp, station_id, lat, long, created_at
 		FROM weather_data
 		ORDER BY created_at DESC
 		LIMIT 1
@@ -85,6 +85,7 @@ func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 		&data.Pressure,
 		&data.Humidity,
 		&data.Temp,
+		&data.StationID,
 		&data.Lat,
 		&data.Long,
 		&data.CreatedAt,
@@ -95,23 +96,4 @@ func (w *WeatherHandler) GetWeatherData(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, data)
-}
-
-func (w *WeatherHandler) SetupDatabase(c *gin.Context) {
-	query := `
-	CREATE TABLE IF NOT EXISTS weather_data (
-		id TEXT PRIMARY KEY,
-		pressure INTEGER NOT NULL,
-		humidity INTEGER NOT NULL,
-		temp INTEGER NOT NULL,
-		lat REAL NOT NULL,
-		long REAL NOT NULL,
-		created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
-	);`
-
-	if _, err := w.db.Exec(query); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"message": "Tabela PostgreSQL pronta"})
 }

@@ -21,6 +21,7 @@ type WeatherResponse struct {
 	Pressure  uint32    `json:"pressure"`
 	Humidity  uint16    `json:"humidity"`
 	Temp      int16     `json:"temp"`
+	StationID string    `json:"station_id"`
 	Lat       float64   `json:"lat"`
 	Long      float64   `json:"long"`
 	CreatedAt time.Time `json:"created_at"`
