@@ -78,12 +78,19 @@ Você pode cadastrar e consultar suas estações meteorológicas.
 
 A API recebe os dados via `POST` no endpoint `/api/v1/weather`. Exemplo de payload:
 
+> **⚠️ Nota sobre Otimização de Memória (Decimais como Inteiros):** Para economizar memória e tráfego, as métricas dos sensores devem ser enviadas e armazenadas como números inteiros. 
+> - **Umidade (`humidity`)**: Espera um `uint16`. Ex: `80.5%` deve ser enviado como `805`.
+> - **Temperatura (`temp`)**: Espera um `int16`. Ex: `22.5°C` deve ser enviado como `225`.
+> - **Pressão (`pressure`)**: Espera um `uint32`. Ex: `1013.25 hPa` deve ser enviado como `101325`.
+> 
+> **Atenção:** Latitude (`lat`) e Longitude (`long`) continuam sendo enviados como decimais padrão (`float64`). Lembre-se de reverter os valores inteiros para decimais no seu frontend (dividindo por 10 ou 100) ao exibir os dados!
+
 ```json
 {
   "station_id": "uuid-da-estacao",
-  "pressure": 1013,
-  "humidity": 65,
-  "temp": 22,
+  "pressure": 101325,
+  "humidity": 650,
+  "temp": 225,
   "lat": -23.5505,
   "long": -46.6333
 }
