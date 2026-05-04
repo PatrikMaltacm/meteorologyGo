@@ -1,0 +1,141 @@
+{
+  "info": {
+    "name": "MeteorologyGo API",
+    "description": "Postman collection for MeteorologyGo API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Weather",
+      "item": [
+        {
+          "name": "Get Latest Weather",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/weather/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weather",
+                ""
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get All Weather Data",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/weather/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weather",
+                "all"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Weather Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"station_id\": \"b32a937a-9cd4-4c48-8dfa-8a8b2dfbc3b4\",\n  \"pressure\": 1012,\n  \"humidity\": 65,\n  \"temp\": 28,\n  \"lat\": -23.5505,\n  \"long\": -46.6333\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/weather/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "weather",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Station",
+      "item": [
+        {
+          "name": "Get All Stations",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/station/all",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "station",
+                "all"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Station",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"lat\": -23.5505,\n  \"long\": -46.6333\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/station/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "station",
+                ""
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1",
+      "type": "string"
+    }
+  ]
+}
