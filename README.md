@@ -22,7 +22,7 @@ Esta API é o lugar ideal para armazenar, consultar e gerenciar esses dados de f
 | [Go (Golang)](https://go.dev/) | Linguagem principal — alta performance e concorrência nativa |
 | [Gin Gonic](https://github.com/gin-gonic/gin) | Framework web rápido e minimalista |
 | [PostgreSQL](https://www.postgresql.org/) | Banco de dados relacional robusto para armazenamento dos dados |
-| [BigCache](https://github.com/allegro/bigcache) | Cache em memória ultra-rápido, reduzindo o tempo de resposta do último dado para ~4ms |
+| [BigCache](https://github.com/allegro/bigcache) | Cache em memória ultra-rápido, reduzindo o tempo de resposta do último dado para em média   ~4ms em minha minha máquina |
 | [go-playground/validator](https://github.com/go-playground/validator) | Validação rigorosa dos dados recebidos dos sensores |
 | [godotenv](https://github.com/joho/godotenv) | Gerenciamento de variáveis de ambiente via `.env` |
 
@@ -97,14 +97,14 @@ A API recebe os dados via `POST` no endpoint `/api/v1/weather`. Exemplo de paylo
 ```
 
 **Consultar dados:**
-- `GET /api/v1/weather` (retorna a última leitura registrada com altíssima performance em ~4ms graças ao cache em memória)
+- `GET /api/v1/weather` (retorna a última leitura registrada)
 - `GET /api/v1/weather/all` (retorna todo o histórico de leituras)
 
 ---
 
 ## 💡 Escalabilidade e Cache
 
-A API utiliza o **BigCache** para armazenar a última leitura de dados meteorológicos em memória, garantindo tempos de resposta extremamente rápidos (em média `~4ms`). 
+A API utiliza o **BigCache** para armazenar a última leitura de dados meteorológicos em memória, garantindo tempos de resposta extremamente rápidos (em média `~4ms` nos testes que fiz em minha máquina). 
 
 > **Observação:** O limite de memória do cache está configurado por padrão em `512 MB` (`HardMaxCacheSize: 512` no arquivo `internal/cache/bigcache.go`). Se a sua aplicação escalar de forma significativa (com milhares de estações registrando dados massivamente), considere aumentar esse valor de acordo com os recursos de hardware do seu servidor para evitar a expiração/remoção prematura de dados cacheados.
 
